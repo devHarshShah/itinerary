@@ -10,6 +10,10 @@ from database import get_db  # Removed init_db
 # Import routers
 from auth.router import router as auth_router
 from itinerary.router import router as itinerary_router
+from destination.router import router as destination_router
+from accommodation.router import router as accommodation_router
+from activity.router import router as activity_router
+from transfer.router import router as transfer_router
 
 # Define lifespan context manager
 @asynccontextmanager
@@ -43,6 +47,10 @@ app.add_middleware(
 # Include routers
 app.include_router(auth_router)
 app.include_router(itinerary_router)
+app.include_router(destination_router)
+app.include_router(accommodation_router)
+app.include_router(activity_router)
+app.include_router(transfer_router)
 
 # Root endpoint
 @app.get("/")

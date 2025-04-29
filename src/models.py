@@ -8,7 +8,11 @@ from datetime import datetime, time
 from typing import List, Optional
 from sqlalchemy.sql import func
 
-from database import Base
+# Try to import with src prefix, if that fails, try without it
+try:
+    from src.database import Base
+except ModuleNotFoundError:
+    from database import Base
 
 # Enums
 class TransportType(enum.Enum):

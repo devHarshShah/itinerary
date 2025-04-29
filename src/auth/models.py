@@ -2,8 +2,14 @@ from sqlalchemy import Column, Integer, String, DateTime, Boolean, Enum
 from sqlalchemy.sql import func
 import enum
 from datetime import datetime
+import sys
+from pathlib import Path
 
-from database import Base
+# Try to import with src prefix, if that fails, try without it
+try:
+    from src.database import Base
+except ModuleNotFoundError:
+    from database import Base
 
 
 class UserRole(str, enum.Enum):

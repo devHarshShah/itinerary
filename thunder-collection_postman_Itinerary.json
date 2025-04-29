@@ -590,6 +590,1057 @@
                             }
                         ]
                     }
+                },
+                {
+                    "name": "Create Phuket Itinerary",
+                    "request": {
+                        "method": "POST",
+                        "url": {
+                            "raw": "localhost:8000/itineraries/",
+                            "path": [
+                                "itineraries",
+                                ""
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"title\": \"Phuket Adventure Weekend\",\n  \"duration_nights\": 3,\n  \"description\": \"A perfect beach getaway to Thailand's largest island with a mix of relaxation and adventure\",\n  \"preferences\": {\n    \"budget\": \"medium\",\n    \"pace\": \"moderate\"\n  },\n  \"total_estimated_cost\": 1200.0,\n  \"days\": [\n    {\n      \"day_number\": 1,\n      \"main_destination_id\": 1,\n      \"description\": \"Arrival and Beach Day\",\n      \"accommodations\": [2],\n      \"activities\": [\n        {\n          \"id\": 1,\n          \"start_time\": \"14:00\",\n          \"end_time\": \"18:00\",\n          \"order\": 1\n        }\n      ],\n      \"transfers\": [\n        {\n          \"id\": 1,\n          \"order\": 1\n        }\n      ]\n    },\n    {\n      \"day_number\": 2,\n      \"main_destination_id\": 1,\n      \"description\": \"Island Hopping Adventure\",\n      \"accommodations\": [2],\n      \"activities\": [\n        {\n          \"id\": 3,\n          \"start_time\": \"08:00\",\n          \"end_time\": \"16:00\",\n          \"order\": 1\n        },\n        {\n          \"id\": 4,\n          \"start_time\": \"20:00\",\n          \"end_time\": \"21:30\",\n          \"order\": 2\n        }\n      ],\n      \"transfers\": []\n    },\n    {\n      \"day_number\": 3,\n      \"main_destination_id\": 1,\n      \"description\": \"Cultural Exploration\",\n      \"accommodations\": [2],\n      \"activities\": [\n        {\n          \"id\": 2,\n          \"start_time\": \"09:00\",\n          \"end_time\": \"11:00\",\n          \"order\": 1\n        },\n        {\n          \"id\": 3,\n          \"start_time\": \"14:00\",\n          \"end_time\": \"16:00\",\n          \"order\": 2\n        }\n      ],\n      \"transfers\": [\n        {\n          \"id\": 3,\n          \"order\": 1\n        }\n      ]\n    },\n    {\n      \"day_number\": 4,\n      \"main_destination_id\": 1,\n      \"description\": \"Departure Day\",\n      \"accommodations\": [],\n      \"activities\": [\n        {\n          \"id\": 1,\n          \"start_time\": \"09:00\",\n          \"end_time\": \"11:00\",\n          \"order\": 1\n        }\n      ],\n      \"transfers\": [\n        {\n          \"id\": 1,\n          \"order\": 1\n        }\n      ]\n    }\n  ]\n}"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Destinations",
+            "item": [
+                {
+                    "name": "Create Destination",
+                    "request": {
+                        "method": "POST",
+                        "url": {
+                            "raw": "localhost:8000/destinations/",
+                            "path": [
+                                "destinations",
+                                ""
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"name\": \"Phuket\",\n  \"region\": \"Southern Thailand\",\n  \"country\": \"Thailand\",\n  \"description\": \"Beautiful island with amazing beaches, clear waters, and vibrant nightlife\",\n  \"latitude\": 7.9519,\n  \"longitude\": 98.3381,\n  \"image_url\": \"https://example.com/images/phuket.jpg\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Get All Destinations",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "localhost:8000/destinations/?skip=0&limit=100",
+                            "path": [
+                                "destinations",
+                                ""
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000",
+                            "query": [
+                                {
+                                    "key": "skip",
+                                    "value": "0"
+                                },
+                                {
+                                    "key": "limit",
+                                    "value": "100"
+                                },
+                                {
+                                    "key": "region",
+                                    "value": "",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "country",
+                                    "value": "",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "search",
+                                    "value": "",
+                                    "disabled": true
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Filtered Destinations",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "localhost:8000/destinations/?region=Southern Thailand&limit=10",
+                            "path": [
+                                "destinations",
+                                ""
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000",
+                            "query": [
+                                {
+                                    "key": "region",
+                                    "value": "Southern Thailand"
+                                },
+                                {
+                                    "key": "limit",
+                                    "value": "10"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Destination by ID",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "localhost:8000/destinations/1",
+                            "path": [
+                                "destinations",
+                                "1"
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        }
+                    }
+                },
+                {
+                    "name": "Update Destination",
+                    "request": {
+                        "method": "PUT",
+                        "url": {
+                            "raw": "localhost:8000/destinations/1",
+                            "path": [
+                                "destinations",
+                                "1"
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"name\": \"Phuket\",\n  \"region\": \"Southern Thailand\",\n  \"description\": \"Updated description: Beautiful tropical island paradise with stunning beaches\",\n  \"image_url\": \"https://example.com/images/phuket_updated.jpg\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Partial Update Destination",
+                    "request": {
+                        "method": "PATCH",
+                        "url": {
+                            "raw": "localhost:8000/destinations/1",
+                            "path": [
+                                "destinations",
+                                "1"
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"description\": \"Partially updated description\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Delete Destination",
+                    "request": {
+                        "method": "DELETE",
+                        "url": {
+                            "raw": "localhost:8000/destinations/1",
+                            "path": [
+                                "destinations",
+                                "1"
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Accommodations",
+            "item": [
+                {
+                    "name": "Create Accommodation - Luxury Resort",
+                    "request": {
+                        "method": "POST",
+                        "url": {
+                            "raw": "localhost:8000/accommodations/",
+                            "path": [
+                                "accommodations",
+                                ""
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"name\": \"Banyan Tree Phuket\",\n  \"destination_id\": 1,\n  \"type\": \"resort\",\n  \"description\": \"Luxury pool villa resort with world-class spa facilities\",\n  \"address\": \"33, 33/27 Moo 4, Srisoonthorn Road, Cherngtalay, Amphur Talang\",\n  \"stars\": 5,\n  \"price_category\": 4,\n  \"amenities\": {\n    \"Swimming Pool\": true,\n    \"Spa\": true,\n    \"Restaurant\": true,\n    \"Room Service\": true,\n    \"Beach Access\": true\n  },\n  \"website_url\": \"https://example.com/banyantree-phuket\",\n  \"image_url\": \"https://example.com/images/banyan-tree.jpg\",\n  \"contact_info\": {\n    \"phone\": \"+66 76 372 400\",\n    \"email\": \"reservations@banyantree.com\"\n  }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Create Accommodation - Mid-range Hotel",
+                    "request": {
+                        "method": "POST",
+                        "url": {
+                            "raw": "localhost:8000/accommodations/",
+                            "path": [
+                                "accommodations",
+                                ""
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"name\": \"Novotel Phuket Karon Beach\",\n  \"destination_id\": 1,\n  \"type\": \"hotel\",\n  \"description\": \"Family-friendly hotel near Karon Beach with multiple pools\",\n  \"address\": \"568 Patak Road, Karon Beach, Muang\",\n  \"stars\": 4,\n  \"price_category\": 2,\n  \"amenities\": {\n    \"Swimming Pool\": true,\n    \"Fitness Center\": true,\n    \"Restaurant\": true,\n    \"Kids Club\": true\n  },\n  \"website_url\": \"https://example.com/novotel-phuket\",\n  \"image_url\": \"https://example.com/images/novotel-phuket.jpg\",\n  \"contact_info\": {\n    \"phone\": \"+66 76 358 666\",\n    \"email\": \"info@novotelphuket.com\"\n  }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Create Accommodation - Budget Option",
+                    "request": {
+                        "method": "POST",
+                        "url": {
+                            "raw": "localhost:8000/accommodations/",
+                            "path": [
+                                "accommodations",
+                                ""
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"name\": \"Phuket Capsule Hostel\",\n  \"destination_id\": 1,\n  \"type\": \"hostel\",\n  \"description\": \"Modern capsule hostel in Patong, walking distance to the beach\",\n  \"address\": \"169/16 Rat-U-Thit 200 Pee Road, Patong\",\n  \"stars\": 2,\n  \"price_category\": 1,\n  \"amenities\": {\n    \"Free WiFi\": true,\n    \"Shared Kitchen\": true,\n    \"Lounge Area\": true,\n    \"Lockers\": true\n  },\n  \"website_url\": \"https://example.com/phuket-capsule\",\n  \"image_url\": \"https://example.com/images/phuket-capsule.jpg\",\n  \"contact_info\": {\n    \"phone\": \"+66 76 344 120\",\n    \"email\": \"info@phuketcapsule.com\"\n  }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Get All Accommodations",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "localhost:8000/accommodations/?skip=0&limit=100",
+                            "path": [
+                                "accommodations",
+                                ""
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000",
+                            "query": [
+                                {
+                                    "key": "skip",
+                                    "value": "0"
+                                },
+                                {
+                                    "key": "limit",
+                                    "value": "100"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Filter Accommodations by Destination",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "localhost:8000/accommodations/?destination_id=1&min_stars=4",
+                            "path": [
+                                "accommodations",
+                                ""
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000",
+                            "query": [
+                                {
+                                    "key": "destination_id",
+                                    "value": "1"
+                                },
+                                {
+                                    "key": "min_stars",
+                                    "value": "4"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Accommodation by ID",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "localhost:8000/accommodations/1",
+                            "path": [
+                                "accommodations",
+                                "1"
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        }
+                    }
+                },
+                {
+                    "name": "Update Accommodation",
+                    "request": {
+                        "method": "PUT",
+                        "url": {
+                            "raw": "localhost:8000/accommodations/1",
+                            "path": [
+                                "accommodations",
+                                "1"
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"name\": \"Banyan Tree Phuket\",\n  \"description\": \"Updated: Award-winning luxury pool villa resort with world-class spa facilities and private beach access\",\n  \"stars\": 5,\n  \"price_category\": 5,\n  \"amenities\": {\n    \"Private Pool\": true,\n    \"Spa\": true,\n    \"Restaurant\": true,\n    \"Room Service\": true,\n    \"Beach Access\": true,\n    \"Golf Course\": true\n  }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Partial Update Accommodation",
+                    "request": {
+                        "method": "PATCH",
+                        "url": {
+                            "raw": "localhost:8000/accommodations/2",
+                            "path": [
+                                "accommodations",
+                                "2"
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"price_category\": 3,\n  \"description\": \"Recently renovated family-friendly hotel near Karon Beach with multiple pools\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Delete Accommodation",
+                    "request": {
+                        "method": "DELETE",
+                        "url": {
+                            "raw": "localhost:8000/accommodations/3",
+                            "path": [
+                                "accommodations",
+                                "3"
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Activities",
+            "item": [
+                {
+                    "name": "Create Activity - Beach",
+                    "request": {
+                        "method": "POST",
+                        "url": {
+                            "raw": "localhost:8000/activities/",
+                            "path": [
+                                "activities",
+                                ""
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"name\": \"Patong Beach Day\",\n  \"destination_id\": 1,\n  \"category\": \"water_activity\",\n  \"description\": \"Enjoy a day on Phuket's most famous beach with water sports and beachside cafes\",\n  \"location\": \"Patong Beach, Patong\",\n  \"duration_hours\": 4.0,\n  \"price_category\": 1,\n  \"is_must_see\": true,\n  \"recommended_time_of_day\": \"DAYTIME\",\n  \"image_url\": \"https://example.com/images/patong-beach.jpg\",\n  \"contact_info\": null,\n  \"additional_info\": \"Bring sunscreen, beach towel, and swimwear. Water sports equipment can be rented at the beach.\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Create Activity - Cultural",
+                    "request": {
+                        "method": "POST",
+                        "url": {
+                            "raw": "localhost:8000/activities/",
+                            "path": [
+                                "activities",
+                                ""
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"name\": \"Big Buddha Phuket\",\n  \"destination_id\": 1,\n  \"category\": \"sightseeing\",\n  \"description\": \"Visit the 45-meter tall white marble Buddha statue with panoramic views of the island\",\n  \"location\": \"Nakkerd Hills between Chalong and Kata\",\n  \"duration_hours\": 2.0,\n  \"price_category\": 1,\n  \"is_must_see\": true,\n  \"recommended_time_of_day\": \"MORNING\",\n  \"image_url\": \"https://example.com/images/big-buddha.jpg\",\n  \"contact_info\": {\n    \"phone\": \"+66 76 256 180\"\n  },\n  \"additional_info\": \"Modest dress code required. Scarves available at the entrance for those in inappropriate attire.\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Create Activity - Adventure",
+                    "request": {
+                        "method": "POST",
+                        "url": {
+                            "raw": "localhost:8000/activities/",
+                            "path": [
+                                "activities",
+                                ""
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"name\": \"Phi Phi Islands Boat Tour\",\n  \"destination_id\": 1,\n  \"category\": \"adventure\",\n  \"description\": \"Full-day speedboat tour to the famous Phi Phi Islands with snorkeling and lunch\",\n  \"location\": \"Departure from Chalong Pier\",\n  \"duration_hours\": 8.0,\n  \"price_category\": 3,\n  \"is_must_see\": true,\n  \"recommended_time_of_day\": \"DAYTIME\",\n  \"image_url\": \"https://example.com/images/phi-phi-tour.jpg\",\n  \"contact_info\": {\n    \"phone\": \"+66 76 385 110\",\n    \"email\": \"info@phiphitour.com\"\n  },\n  \"additional_info\": \"Tour includes hotel pickup/drop-off, speedboat transfers, lunch, snorkeling equipment, life jacket, and tour guide.\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Create Activity - Entertainment",
+                    "request": {
+                        "method": "POST",
+                        "url": {
+                            "raw": "localhost:8000/activities/",
+                            "path": [
+                                "activities",
+                                ""
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"name\": \"Phuket Simon Cabaret Show\",\n  \"destination_id\": 1,\n  \"category\": \"entertainment\",\n  \"description\": \"Thailand's famous ladyboy cabaret show featuring spectacular costumes and performances\",\n  \"location\": \"8 Sirirach Road, Patong Beach\",\n  \"duration_hours\": 1.5,\n  \"price_category\": 2,\n  \"is_must_see\": false,\n  \"recommended_time_of_day\": \"EVENING\",\n  \"image_url\": \"https://example.com/images/simon-cabaret.jpg\",\n  \"contact_info\": {\n    \"phone\": \"+66 76 342 011\",\n    \"email\": \"booking@phuketsimon.com\"\n  },\n  \"additional_info\": \"Shows at 6:00 PM, 7:45 PM and 9:30 PM. Photography is prohibited during the performance.\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Get All Activities",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "localhost:8000/activities/?skip=0&limit=100",
+                            "path": [
+                                "activities",
+                                ""
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000",
+                            "query": [
+                                {
+                                    "key": "skip",
+                                    "value": "0"
+                                },
+                                {
+                                    "key": "limit",
+                                    "value": "100"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Filter Activities - Must See in Phuket",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "localhost:8000/activities/?destination_id=1&is_must_see=true",
+                            "path": [
+                                "activities",
+                                ""
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000",
+                            "query": [
+                                {
+                                    "key": "destination_id",
+                                    "value": "1"
+                                },
+                                {
+                                    "key": "is_must_see",
+                                    "value": "true"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Activity by ID",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "localhost:8000/activities/1",
+                            "path": [
+                                "activities",
+                                "1"
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        }
+                    }
+                },
+                {
+                    "name": "Update Activity",
+                    "request": {
+                        "method": "PUT",
+                        "url": {
+                            "raw": "localhost:8000/activities/3",
+                            "path": [
+                                "activities",
+                                "3"
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"name\": \"Phi Phi Islands Premium Boat Tour\",\n  \"category\": \"adventure\",\n  \"description\": \"Premium full-day speedboat tour to the famous Phi Phi Islands with snorkeling, lunch, and sunset viewing\",\n  \"duration_hours\": 9.0,\n  \"price_category\": 4,\n  \"is_must_see\": true,\n  \"additional_info\": \"Tour now includes hotel pickup/drop-off, premium speedboat transfers, lunch, snacks, snorkeling equipment, life jacket, and professional English-speaking tour guide.\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Partial Update Activity",
+                    "request": {
+                        "method": "PATCH",
+                        "url": {
+                            "raw": "localhost:8000/activities/2",
+                            "path": [
+                                "activities",
+                                "2"
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"description\": \"Visit the iconic 45-meter tall white marble Buddha statue offering the best panoramic views of the island\",\n  \"recommended_time_of_day\": \"SUNSET\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Delete Activity",
+                    "request": {
+                        "method": "DELETE",
+                        "url": {
+                            "raw": "localhost:8000/activities/4",
+                            "path": [
+                                "activities",
+                                "4"
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Transfers",
+            "item": [
+                {
+                    "name": "Create Transfer - Airport to Hotel",
+                    "request": {
+                        "method": "POST",
+                        "url": {
+                            "raw": "localhost:8000/transfers/",
+                            "path": [
+                                "transfers",
+                                ""
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"name\": \"Phuket Airport to Patong Transfer\",\n  \"origin_id\": 2,\n  \"destination_id\": 1,\n  \"type\": \"private_car\",\n  \"description\": \"Private car transfer from Phuket International Airport to hotels in Patong Beach area\",\n  \"duration_hours\": 1.0,\n  \"price_category\": 2,\n  \"provider\": \"Phuket Airport Transfer Service\",\n  \"additional_info\": \"Meet and greet at the airport arrival hall. Driver will be holding a sign with your name.\",\n  \"contact_info\": {\n    \"phone\": \"+66 76 224 888\",\n    \"email\": \"booking@phukettransfer.com\"\n  }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Create Transfer - Ferry to Island",
+                    "request": {
+                        "method": "POST",
+                        "url": {
+                            "raw": "localhost:8000/transfers/",
+                            "path": [
+                                "transfers",
+                                ""
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"name\": \"Phuket to Phi Phi Island Ferry\",\n  \"origin_id\": 1,\n  \"destination_id\": 3,\n  \"type\": \"ferry\",\n  \"description\": \"Regular ferry service from Rassada Pier in Phuket to Tonsai Pier in Phi Phi Island\",\n  \"duration_hours\": 2.0,\n  \"price_category\": 2,\n  \"provider\": \"Andaman Wave Master\",\n  \"additional_info\": \"Ferries depart at 8:30 AM and 1:30 PM daily. Arrive at least 30 minutes before departure.\",\n  \"contact_info\": {\n    \"phone\": \"+66 76 210 244\",\n    \"email\": \"info@andamanferries.com\"\n  }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Create Transfer - Local Travel",
+                    "request": {
+                        "method": "POST",
+                        "url": {
+                            "raw": "localhost:8000/transfers/",
+                            "path": [
+                                "transfers",
+                                ""
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"name\": \"Patong to Kata Beach Tuk-Tuk\",\n  \"origin_id\": 1,\n  \"destination_id\": 4,\n  \"type\": \"taxi\",\n  \"description\": \"Traditional Thai tuk-tuk transport between Patong and Kata Beach\",\n  \"duration_hours\": 0.5,\n  \"price_category\": 1,\n  \"provider\": \"Local Tuk-Tuk Service\",\n  \"additional_info\": \"Tuk-tuks are available 24/7 in the main tourist areas. Always negotiate the price before starting your journey.\",\n  \"contact_info\": null\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Get All Transfers",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "localhost:8000/transfers/?skip=0&limit=100",
+                            "path": [
+                                "transfers",
+                                ""
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000",
+                            "query": [
+                                {
+                                    "key": "skip",
+                                    "value": "0"
+                                },
+                                {
+                                    "key": "limit",
+                                    "value": "100"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Filter Transfers by Type",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "localhost:8000/transfers/?type=FERRY&max_duration=3",
+                            "path": [
+                                "transfers",
+                                ""
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000",
+                            "query": [
+                                {
+                                    "key": "type",
+                                    "value": "FERRY"
+                                },
+                                {
+                                    "key": "max_duration",
+                                    "value": "3"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Transfer by ID",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "localhost:8000/transfers/1",
+                            "path": [
+                                "transfers",
+                                "1"
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        }
+                    }
+                },
+                {
+                    "name": "Update Transfer",
+                    "request": {
+                        "method": "PUT",
+                        "url": {
+                            "raw": "localhost:8000/transfers/1",
+                            "path": [
+                                "transfers",
+                                "1"
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"name\": \"VIP Phuket Airport to Patong Transfer\",\n  \"type\": \"private_car\",\n  \"description\": \"Luxury private car transfer from Phuket International Airport to hotels in Patong Beach area with refreshments\",\n  \"duration_hours\": 0.75,\n  \"price_category\": 3,\n  \"provider\": \"Phuket Premium Transfer Service\",\n  \"additional_info\": \"Premium service includes meet and greet at the airport arrival hall, complimentary cold towels and drinking water. Driver will be holding a sign with your name.\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Partial Update Transfer",
+                    "request": {
+                        "method": "PATCH",
+                        "url": {
+                            "raw": "localhost:8000/transfers/2",
+                            "path": [
+                                "transfers",
+                                "2"
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"additional_info\": \"Updated schedule: Ferries now depart at 8:00 AM, 11:30 AM and 2:00 PM daily. Arrive at least 45 minutes before departure during high season.\",\n  \"price_category\": 3\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Delete Transfer",
+                    "request": {
+                        "method": "DELETE",
+                        "url": {
+                            "raw": "localhost:8000/transfers/3",
+                            "path": [
+                                "transfers",
+                                "3"
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ]
+                    }
                 }
             ]
         }

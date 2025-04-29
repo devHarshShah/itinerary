@@ -2,11 +2,42 @@ from sqlalchemy.orm import Session
 from typing import List, Dict, Any, Optional
 from fastapi import HTTPException, status
 from sqlalchemy import and_, or_
+from sqlalchemy.sql import text
+from pydantic import BaseModel
 
 from models import Itinerary, ItineraryDay, Destination, Accommodation, Activity, Transfer
 from auth.models import User
 from itinerary.schemas import ItineraryCreate, ItineraryUpdate, ItineraryFilter, ItineraryDayCreate, ItineraryDayUpdate
 from itinerary.exceptions import ItineraryException
+
+# Define serializers for Accommodation, Activity, and Transfer
+class AccommodationSerializer(BaseModel):
+    id: int
+    name: str
+    type: str
+
+    class Config:
+        from_attributes = True
+
+class ActivitySerializer(BaseModel):
+    id: int
+    name: str
+    category: str
+    start_time: Optional[str] = None
+    end_time: Optional[str] = None
+    order: Optional[int] = None
+
+    class Config:
+        from_attributes = True
+
+class TransferSerializer(BaseModel):
+    id: int
+    name: str
+    type: str
+    order: Optional[int] = None
+
+    class Config:
+        from_attributes = True
 
 # Itinerary CRUD operations
 def create_itinerary(db: Session, itinerary_data: ItineraryCreate, user: User = None) -> Itinerary:
@@ -66,13 +97,13 @@ def create_itinerary(db: Session, itinerary_data: ItineraryCreate, user: User = 
                     raise ItineraryException.ACTIVITY_NOT_FOUND
                 
                 # Add activity to day with additional data in the association table
-                stmt = f"""
+                stmt = text(f"""
                 INSERT INTO itinerary_activity (itinerary_day_id, activity_id, start_time, end_time, "order")
                 VALUES ({day.id}, {activity.id}, 
                         {f"'{activity_data.get('start_time')}'" if activity_data.get('start_time') else 'NULL'}, 
                         {f"'{activity_data.get('end_time')}'" if activity_data.get('end_time') else 'NULL'}, 
                         {activity_data.get('order')})
-                """
+                """)
                 db.execute(stmt)
         
         # Add transfers with order
@@ -83,31 +114,133 @@ def create_itinerary(db: Session, itinerary_data: ItineraryCreate, user: User = 
                     raise ItineraryException.TRANSFER_NOT_FOUND
                 
                 # Add transfer to day with order in the association table
-                stmt = f"""
+                stmt = text(f"""
                 INSERT INTO itinerary_transfer (itinerary_day_id, transfer_id, "order")
                 VALUES ({day.id}, {transfer.id}, {transfer_data.get('order')})
-                """
+                """)
                 db.execute(stmt)
     
     db.commit()
     db.refresh(itinerary)
-    return itinerary
+
+    # Serialize the days with their related objects to avoid validation errors
+    serialized_days = []
+    for day in itinerary.days:
+        serialized_day = {
+            "id": day.id,
+            "itinerary_id": day.itinerary_id,  # Add the itinerary_id field
+            "day_number": day.day_number,
+            "main_destination_id": day.main_destination_id,
+            "description": day.description,
+            "accommodations": [AccommodationSerializer.model_validate(acc).model_dump() for acc in day.accommodations],
+            "activities": [ActivitySerializer.model_validate(act).model_dump() for act in day.activities],
+            "transfers": [TransferSerializer.model_validate(tr).model_dump() for tr in day.transfers]
+        }
+        serialized_days.append(serialized_day)
+    
+    # Create a serialized version of the itinerary with the serialized days
+    serialized_itinerary = {
+        "id": itinerary.id,
+        "uuid": itinerary.uuid,
+        "title": itinerary.title,
+        "duration_nights": itinerary.duration_nights,
+        "description": itinerary.description,
+        "preferences": itinerary.preferences,
+        "is_recommended": itinerary.is_recommended,
+        "total_estimated_cost": itinerary.total_estimated_cost,
+        "created_at": itinerary.created_at,  # Add the created_at timestamp
+        "updated_at": itinerary.updated_at,  # Add the updated_at timestamp
+        "days": serialized_days
+    }
+    
+    # Convert the serialized dictionary back to an Itinerary object
+    from pydantic import create_model
+    SerializedItinerary = create_model('SerializedItinerary', **{k: (type(v), ...) for k, v in serialized_itinerary.items()})
+    return SerializedItinerary(**serialized_itinerary)
 
 
-def get_itinerary(db: Session, itinerary_id: int) -> Itinerary:
+def get_itinerary(db: Session, itinerary_id: int):
     """Get an itinerary by ID with all related data"""
     itinerary = db.query(Itinerary).filter(Itinerary.id == itinerary_id).first()
     if not itinerary:
         raise ItineraryException.ITINERARY_NOT_FOUND
-    return itinerary
+    
+    # Serialize the days with their related objects to avoid validation errors
+    serialized_days = []
+    for day in itinerary.days:
+        serialized_day = {
+            "id": day.id,
+            "itinerary_id": day.itinerary_id,
+            "day_number": day.day_number,
+            "main_destination_id": day.main_destination_id,
+            "description": day.description,
+            "accommodations": [AccommodationSerializer.model_validate(acc).model_dump() for acc in day.accommodations],
+            "activities": [ActivitySerializer.model_validate(act).model_dump() for act in day.activities],
+            "transfers": [TransferSerializer.model_validate(tr).model_dump() for tr in day.transfers]
+        }
+        serialized_days.append(serialized_day)
+    
+    # Create a serialized version of the itinerary with the serialized days
+    serialized_itinerary = {
+        "id": itinerary.id,
+        "uuid": itinerary.uuid,
+        "title": itinerary.title,
+        "duration_nights": itinerary.duration_nights,
+        "description": itinerary.description,
+        "preferences": itinerary.preferences,
+        "is_recommended": itinerary.is_recommended,
+        "total_estimated_cost": itinerary.total_estimated_cost,
+        "created_at": itinerary.created_at,
+        "updated_at": itinerary.updated_at,
+        "days": serialized_days
+    }
+    
+    # Convert the serialized dictionary back to an Itinerary object
+    from pydantic import create_model
+    SerializedItinerary = create_model('SerializedItinerary', **{k: (type(v), ...) for k, v in serialized_itinerary.items()})
+    return SerializedItinerary(**serialized_itinerary)
 
 
-def get_itinerary_by_uuid(db: Session, uuid: str) -> Itinerary:
+def get_itinerary_by_uuid(db: Session, uuid: str):
     """Get an itinerary by UUID with all related data"""
     itinerary = db.query(Itinerary).filter(Itinerary.uuid == uuid).first()
     if not itinerary:
         raise ItineraryException.ITINERARY_NOT_FOUND
-    return itinerary
+    
+    # Serialize the days with their related objects to avoid validation errors
+    serialized_days = []
+    for day in itinerary.days:
+        serialized_day = {
+            "id": day.id,
+            "itinerary_id": day.itinerary_id,
+            "day_number": day.day_number,
+            "main_destination_id": day.main_destination_id,
+            "description": day.description,
+            "accommodations": [AccommodationSerializer.model_validate(acc).model_dump() for acc in day.accommodations],
+            "activities": [ActivitySerializer.model_validate(act).model_dump() for act in day.activities],
+            "transfers": [TransferSerializer.model_validate(tr).model_dump() for tr in day.transfers]
+        }
+        serialized_days.append(serialized_day)
+    
+    # Create a serialized version of the itinerary with the serialized days
+    serialized_itinerary = {
+        "id": itinerary.id,
+        "uuid": itinerary.uuid,
+        "title": itinerary.title,
+        "duration_nights": itinerary.duration_nights,
+        "description": itinerary.description,
+        "preferences": itinerary.preferences,
+        "is_recommended": itinerary.is_recommended,
+        "total_estimated_cost": itinerary.total_estimated_cost,
+        "created_at": itinerary.created_at,
+        "updated_at": itinerary.updated_at,
+        "days": serialized_days
+    }
+    
+    # Convert the serialized dictionary back to an Itinerary object
+    from pydantic import create_model
+    SerializedItinerary = create_model('SerializedItinerary', **{k: (type(v), ...) for k, v in serialized_itinerary.items()})
+    return SerializedItinerary(**serialized_itinerary)
 
 
 def get_itineraries(
@@ -116,7 +249,7 @@ def get_itineraries(
     limit: int = 100, 
     filters: Optional[ItineraryFilter] = None,
     user_id: Optional[int] = None
-) -> List[Itinerary]:
+):
     """Get a list of itineraries with optional filtering"""
     query = db.query(Itinerary)
     
@@ -141,12 +274,32 @@ def get_itineraries(
     
     # Apply pagination
     itineraries = query.offset(skip).limit(limit).all()
-    return itineraries
+    
+    # Serialize the itineraries
+    serialized_itineraries = []
+    for itinerary in itineraries:
+        serialized_itinerary = {
+            "id": itinerary.id,
+            "uuid": itinerary.uuid,
+            "title": itinerary.title,
+            "duration_nights": itinerary.duration_nights,
+            "description": itinerary.description,
+            "preferences": itinerary.preferences,
+            "is_recommended": itinerary.is_recommended,
+            "total_estimated_cost": itinerary.total_estimated_cost,
+            "created_at": itinerary.created_at,
+            "updated_at": itinerary.updated_at,
+        }
+        serialized_itineraries.append(serialized_itinerary)
+    
+    return serialized_itineraries
 
 
-def update_itinerary(db: Session, itinerary_id: int, itinerary_data: ItineraryUpdate, user: Optional[User] = None) -> Itinerary:
+def update_itinerary(db: Session, itinerary_id: int, itinerary_data: ItineraryUpdate, user: Optional[User] = None):
     """Update an existing itinerary's basic information"""
-    itinerary = get_itinerary(db, itinerary_id)
+    itinerary = db.query(Itinerary).filter(Itinerary.id == itinerary_id).first()
+    if not itinerary:
+        raise ItineraryException.ITINERARY_NOT_FOUND
     
     # If user is provided, check authorization (assuming Itinerary has a user_id column)
     if user and hasattr(Itinerary, 'user_id') and user.role != 'ADMIN':
@@ -171,7 +324,41 @@ def update_itinerary(db: Session, itinerary_id: int, itinerary_data: ItineraryUp
     
     db.commit()
     db.refresh(itinerary)
-    return itinerary
+    
+    # Serialize the days with their related objects to avoid validation errors
+    serialized_days = []
+    for day in itinerary.days:
+        serialized_day = {
+            "id": day.id,
+            "itinerary_id": day.itinerary_id,
+            "day_number": day.day_number,
+            "main_destination_id": day.main_destination_id,
+            "description": day.description,
+            "accommodations": [AccommodationSerializer.model_validate(acc).model_dump() for acc in day.accommodations],
+            "activities": [ActivitySerializer.model_validate(act).model_dump() for act in day.activities],
+            "transfers": [TransferSerializer.model_validate(tr).model_dump() for tr in day.transfers]
+        }
+        serialized_days.append(serialized_day)
+    
+    # Create a serialized version of the itinerary with the serialized days
+    serialized_itinerary = {
+        "id": itinerary.id,
+        "uuid": itinerary.uuid,
+        "title": itinerary.title,
+        "duration_nights": itinerary.duration_nights,
+        "description": itinerary.description,
+        "preferences": itinerary.preferences,
+        "is_recommended": itinerary.is_recommended,
+        "total_estimated_cost": itinerary.total_estimated_cost,
+        "created_at": itinerary.created_at,
+        "updated_at": itinerary.updated_at,
+        "days": serialized_days
+    }
+    
+    # Convert the serialized dictionary back to an Itinerary object
+    from pydantic import create_model
+    SerializedItinerary = create_model('SerializedItinerary', **{k: (type(v), ...) for k, v in serialized_itinerary.items()})
+    return SerializedItinerary(**serialized_itinerary)
 
 
 def delete_itinerary(db: Session, itinerary_id: int, user: Optional[User] = None) -> bool:
@@ -195,10 +382,12 @@ def update_itinerary_day(
     day_number: int, 
     day_data: ItineraryDayUpdate, 
     user: Optional[User] = None
-) -> ItineraryDay:
+):
     """Update a specific day in an itinerary"""
     # Get the itinerary to ensure it exists and check authorization
-    itinerary = get_itinerary(db, itinerary_id)
+    itinerary = db.query(Itinerary).filter(Itinerary.id == itinerary_id).first()
+    if not itinerary:
+        raise ItineraryException.ITINERARY_NOT_FOUND
     
     # If user is provided, check authorization (assuming Itinerary has a user_id column)
     if user and hasattr(Itinerary, 'user_id') and user.role != 'ADMIN':
@@ -250,13 +439,13 @@ def update_itinerary_day(
                 raise ItineraryException.ACTIVITY_NOT_FOUND
             
             # Add activity to day with additional data in the association table
-            stmt = f"""
+            stmt = text(f"""
             INSERT INTO itinerary_activity (itinerary_day_id, activity_id, start_time, end_time, "order")
             VALUES ({day.id}, {activity.id}, 
                     {f"'{activity_data.get('start_time')}'" if activity_data.get('start_time') else 'NULL'}, 
                     {f"'{activity_data.get('end_time')}'" if activity_data.get('end_time') else 'NULL'}, 
                     {activity_data.get('order')})
-            """
+            """)
             db.execute(stmt)
     
     # Update transfers if provided
@@ -271,15 +460,28 @@ def update_itinerary_day(
                 raise ItineraryException.TRANSFER_NOT_FOUND
             
             # Add transfer to day with order in the association table
-            stmt = f"""
+            stmt = text(f"""
             INSERT INTO itinerary_transfer (itinerary_day_id, transfer_id, "order")
             VALUES ({day.id}, {transfer.id}, {transfer_data.get('order')})
-            """
+            """)
             db.execute(stmt)
     
     db.commit()
     db.refresh(day)
-    return day
+    
+    # Serialize the updated day with their related objects
+    serialized_day = {
+        "id": day.id,
+        "itinerary_id": day.itinerary_id,
+        "day_number": day.day_number,
+        "main_destination_id": day.main_destination_id,
+        "description": day.description,
+        "accommodations": [AccommodationSerializer.model_validate(acc).model_dump() for acc in day.accommodations],
+        "activities": [ActivitySerializer.model_validate(act).model_dump() for act in day.activities],
+        "transfers": [TransferSerializer.model_validate(tr).model_dump() for tr in day.transfers]
+    }
+    
+    return serialized_day
 
 
 def add_itinerary_day(
@@ -287,10 +489,12 @@ def add_itinerary_day(
     itinerary_id: int, 
     day_data: ItineraryDayCreate, 
     user: Optional[User] = None
-) -> ItineraryDay:
+):
     """Add a new day to an existing itinerary"""
     # Get the itinerary to ensure it exists and check authorization
-    itinerary = get_itinerary(db, itinerary_id)
+    itinerary = db.query(Itinerary).filter(Itinerary.id == itinerary_id).first()
+    if not itinerary:
+        raise ItineraryException.ITINERARY_NOT_FOUND
     
     # If user is provided, check authorization (assuming Itinerary has a user_id column)
     if user and hasattr(Itinerary, 'user_id') and user.role != 'ADMIN':
@@ -340,13 +544,13 @@ def add_itinerary_day(
                 raise ItineraryException.ACTIVITY_NOT_FOUND
             
             # Add activity to day with additional data in the association table
-            stmt = f"""
+            stmt = text(f"""
             INSERT INTO itinerary_activity (itinerary_day_id, activity_id, start_time, end_time, "order")
             VALUES ({day.id}, {activity.id}, 
                     {f"'{activity_data.get('start_time')}'" if activity_data.get('start_time') else 'NULL'}, 
                     {f"'{activity_data.get('end_time')}'" if activity_data.get('end_time') else 'NULL'}, 
                     {activity_data.get('order')})
-            """
+            """)
             db.execute(stmt)
     
     # Add transfers with order
@@ -357,10 +561,10 @@ def add_itinerary_day(
                 raise ItineraryException.TRANSFER_NOT_FOUND
             
             # Add transfer to day with order in the association table
-            stmt = f"""
+            stmt = text(f"""
             INSERT INTO itinerary_transfer (itinerary_day_id, transfer_id, "order")
             VALUES ({day.id}, {transfer.id}, {transfer_data.get('order')})
-            """
+            """)
             db.execute(stmt)
     
     # Update itinerary duration if needed
@@ -370,7 +574,20 @@ def add_itinerary_day(
     
     db.commit()
     db.refresh(day)
-    return day
+    
+    # Serialize the day with its related objects
+    serialized_day = {
+        "id": day.id,
+        "itinerary_id": day.itinerary_id,
+        "day_number": day.day_number,
+        "main_destination_id": day.main_destination_id,
+        "description": day.description,
+        "accommodations": [AccommodationSerializer.model_validate(acc).model_dump() for acc in day.accommodations],
+        "activities": [ActivitySerializer.model_validate(act).model_dump() for act in day.activities],
+        "transfers": [TransferSerializer.model_validate(tr).model_dump() for tr in day.transfers]
+    }
+    
+    return serialized_day
 
 
 def delete_itinerary_day(
