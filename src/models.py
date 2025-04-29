@@ -8,7 +8,7 @@ from datetime import datetime, time
 from typing import List, Optional
 from sqlalchemy.sql import func
 
-from src.database import Base
+from database import Base
 
 # Enums
 class TransportType(enum.Enum):

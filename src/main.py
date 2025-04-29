@@ -7,6 +7,9 @@ from contextlib import asynccontextmanager
 
 # Import database functions
 from database import get_db  # Removed init_db
+# Import routers
+from auth.router import router as auth_router
+from itinerary.router import router as itinerary_router
 
 # Define lifespan context manager
 @asynccontextmanager
@@ -36,6 +39,10 @@ app.add_middleware(
     allow_methods=["*"],  # Allows all methods
     allow_headers=["*"],  # Allows all headers
 )
+
+# Include routers
+app.include_router(auth_router)
+app.include_router(itinerary_router)
 
 # Root endpoint
 @app.get("/")

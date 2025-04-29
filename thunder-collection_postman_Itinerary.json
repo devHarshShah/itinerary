@@ -1,0 +1,597 @@
+{
+    "info": {
+        "_postman_id": "6b82fb3a-209f-48da-bf6d-1d3efb5bba28",
+        "name": "Itinerary",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "description": ""
+    },
+    "item": [
+        {
+            "name": "User",
+            "item": [
+                {
+                    "name": "Me",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "localhost:8000/auth/me",
+                            "path": [
+                                "auth",
+                                "me"
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "Edit User",
+                    "request": {
+                        "method": "PUT",
+                        "url": {
+                            "raw": "localhost:8000/auth/me",
+                            "path": [
+                                "auth",
+                                "me"
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"first_name\": \"John\",\n  \"last_name\": \"Doe\",\n  \"email\": \"john.doe@example.com\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Change Password",
+                    "request": {
+                        "method": "POST",
+                        "url": {
+                            "raw": "localhost:8000/auth/change-password",
+                            "path": [
+                                "auth",
+                                "change-password"
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"current_password\": \"CurrentPassword123\",\n  \"new_password\": \"NewPassword123\"\n}"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Auth",
+            "item": [
+                {
+                    "name": "Signup",
+                    "request": {
+                        "method": "POST",
+                        "url": {
+                            "raw": "localhost:8000/auth/register",
+                            "path": [
+                                "auth",
+                                "register"
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"email\": \"user@example.com\",\n  \"first_name\": \"John\",\n  \"last_name\": \"Doe\",\n  \"password\": \"Password123\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Login",
+                    "request": {
+                        "method": "POST",
+                        "url": {
+                            "raw": "localhost:8000/auth/login",
+                            "path": [
+                                "auth",
+                                "login"
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"Password123\"\n}"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Admin",
+            "item": [
+                {
+                    "name": "All Users",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "localhost:8000/auth/users",
+                            "path": [
+                                "auth",
+                                "users"
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "User Detail",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "localhost:8000/auth/users/1",
+                            "path": [
+                                "auth",
+                                "users",
+                                "1"
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "Create Admin",
+                    "request": {
+                        "method": "POST",
+                        "url": {
+                            "raw": "localhost:8000/auth/users/create-admin",
+                            "path": [
+                                "auth",
+                                "users",
+                                "create-admin"
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"email\": \"admin@example.com\",\n  \"first_name\": \"Admin\",\n  \"last_name\": \"User\",\n  \"password\": \"AdminPass123\",\n  \"role\": \"Admin\"\n}"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Health",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "localhost:8000/health",
+                    "path": [
+                        "health"
+                    ],
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                }
+            }
+        },
+        {
+            "name": "Itineraries",
+            "item": [
+                {
+                    "name": "Create Itinerary",
+                    "request": {
+                        "method": "POST",
+                        "url": {
+                            "raw": "localhost:8000/itineraries/",
+                            "path": [
+                                "itineraries",
+                                ""
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"title\": \"Weekend in Paris\",\n  \"duration_nights\": 2,\n  \"description\": \"A romantic weekend in Paris\",\n  \"preferences\": {\n    \"budget\": \"medium\",\n    \"pace\": \"relaxed\"\n  },\n  \"total_estimated_cost\": 1500.0,\n  \"days\": [\n    {\n      \"day_number\": 1,\n      \"main_destination_id\": 1,\n      \"description\": \"Arrival and Eiffel Tower\",\n      \"accommodations\": [1],\n      \"activities\": [\n        {\n          \"id\": 1,\n          \"start_time\": \"10:00\",\n          \"end_time\": \"12:00\",\n          \"order\": 1\n        },\n        {\n          \"id\": 2,\n          \"start_time\": \"14:00\",\n          \"end_time\": \"16:00\",\n          \"order\": 2\n        }\n      ],\n      \"transfers\": [\n        {\n          \"id\": 1,\n          \"order\": 1\n        }\n      ]\n    },\n    {\n      \"day_number\": 2,\n      \"main_destination_id\": 1,\n      \"description\": \"Museums and Dining\",\n      \"accommodations\": [1],\n      \"activities\": [\n        {\n          \"id\": 3,\n          \"start_time\": \"09:00\",\n          \"end_time\": \"13:00\",\n          \"order\": 1\n        },\n        {\n          \"id\": 4,\n          \"start_time\": \"15:00\",\n          \"end_time\": \"17:00\",\n          \"order\": 2\n        }\n      ],\n      \"transfers\": []\n    },\n    {\n      \"day_number\": 3,\n      \"main_destination_id\": 1,\n      \"description\": \"Departure day\",\n      \"accommodations\": [],\n      \"activities\": [\n        {\n          \"id\": 5,\n          \"start_time\": \"10:00\",\n          \"end_time\": \"12:00\",\n          \"order\": 1\n        }\n      ],\n      \"transfers\": [\n        {\n          \"id\": 2,\n          \"order\": 1\n        }\n      ]\n    }\n  ]\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Get All Itineraries",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "localhost:8000/itineraries/?skip=0&limit=100",
+                            "path": [
+                                "itineraries",
+                                ""
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000",
+                            "query": [
+                                {
+                                    "key": "skip",
+                                    "value": "0"
+                                },
+                                {
+                                    "key": "limit",
+                                    "value": "100"
+                                },
+                                {
+                                    "key": "destination_id",
+                                    "value": "",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "min_nights",
+                                    "value": "",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "max_nights",
+                                    "value": "",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "is_recommended",
+                                    "value": "",
+                                    "disabled": true
+                                }
+                            ]
+                        },
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "Get Recommended Itineraries",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "localhost:8000/itineraries/recommended?skip=0&limit=10",
+                            "path": [
+                                "itineraries",
+                                "recommended"
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000",
+                            "query": [
+                                {
+                                    "key": "skip",
+                                    "value": "0"
+                                },
+                                {
+                                    "key": "limit",
+                                    "value": "10"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Itinerary by ID",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "localhost:8000/itineraries/1",
+                            "path": [
+                                "itineraries",
+                                "1"
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "Get Itinerary by UUID",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "localhost:8000/itineraries/by-uuid/550e8400-e29b-41d4-a716-446655440000",
+                            "path": [
+                                "itineraries",
+                                "by-uuid",
+                                "550e8400-e29b-41d4-a716-446655440000"
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        }
+                    }
+                },
+                {
+                    "name": "Update Itinerary",
+                    "request": {
+                        "method": "PUT",
+                        "url": {
+                            "raw": "localhost:8000/itineraries/1",
+                            "path": [
+                                "itineraries",
+                                "1"
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"title\": \"Updated Weekend in Paris\",\n  \"description\": \"An updated romantic weekend in Paris\",\n  \"is_recommended\": true,\n  \"preferences\": {\n    \"budget\": \"high\",\n    \"pace\": \"moderate\"\n  },\n  \"total_estimated_cost\": 2000.0\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Partial Update Itinerary",
+                    "request": {
+                        "method": "PATCH",
+                        "url": {
+                            "raw": "localhost:8000/itineraries/1",
+                            "path": [
+                                "itineraries",
+                                "1"
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"title\": \"Partially Updated Weekend in Paris\",\n  \"is_recommended\": true\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Add Itinerary Day",
+                    "request": {
+                        "method": "POST",
+                        "url": {
+                            "raw": "localhost:8000/itineraries/1/days",
+                            "path": [
+                                "itineraries",
+                                "1",
+                                "days"
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"day_number\": 4,\n  \"main_destination_id\": 2,\n  \"description\": \"Extension day - Versailles\",\n  \"accommodations\": [3],\n  \"activities\": [\n    {\n      \"id\": 6,\n      \"start_time\": \"09:00\",\n      \"end_time\": \"14:00\",\n      \"order\": 1\n    },\n    {\n      \"id\": 7,\n      \"start_time\": \"16:00\",\n      \"end_time\": \"18:00\",\n      \"order\": 2\n    }\n  ],\n  \"transfers\": [\n    {\n      \"id\": 3,\n      \"order\": 1\n    }\n  ]\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Update Itinerary Day",
+                    "request": {
+                        "method": "PUT",
+                        "url": {
+                            "raw": "localhost:8000/itineraries/1/days/1",
+                            "path": [
+                                "itineraries",
+                                "1",
+                                "days",
+                                "1"
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"main_destination_id\": 1,\n  \"description\": \"Updated arrival day itinerary\",\n  \"accommodations\": [2],\n  \"activities\": [\n    {\n      \"id\": 4,\n      \"start_time\": \"14:00\",\n      \"end_time\": \"16:00\",\n      \"order\": 1\n    },\n    {\n      \"id\": 5,\n      \"start_time\": \"18:00\",\n      \"end_time\": \"20:00\",\n      \"order\": 2\n    }\n  ],\n  \"transfers\": [\n    {\n      \"id\": 3,\n      \"order\": 1\n    }\n  ]\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Delete Itinerary Day",
+                    "request": {
+                        "method": "DELETE",
+                        "url": {
+                            "raw": "localhost:8000/itineraries/1/days/1",
+                            "path": [
+                                "itineraries",
+                                "1",
+                                "days",
+                                "1"
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "Delete Itinerary",
+                    "request": {
+                        "method": "DELETE",
+                        "url": {
+                            "raw": "localhost:8000/itineraries/1",
+                            "path": [
+                                "itineraries",
+                                "1"
+                            ],
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    ]
+}
