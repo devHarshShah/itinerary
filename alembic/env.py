@@ -21,14 +21,19 @@ if config.config_file_name is not None:
 
 # add your model's MetaData object here
 # for 'autogenerate' support
-# from myapp import mymodel
-# target_metadata = mymodel.Base.metadata
-target_metadata = None
+from database import Base
+from models import *  # Import all models to register them with Base
+target_metadata = Base.metadata
 
-# Override sqlalchemy.url with environment variable
-sqlalchemy_url = os.getenv("DATABASE_URL")
-if sqlalchemy_url:
-    config.set_main_option("sqlalchemy.url", sqlalchemy_url)
+# Use the same environment variables as in database.py
+db_host = os.getenv("DB_HOST")
+db_name = os.getenv("DB_NAME")
+db_user = os.getenv("DB_USER")
+db_password = os.getenv("DB_PASSWORD")
+
+# Construct the SQLAlchemy URL
+sqlalchemy_url = f"postgresql://{db_user}:{db_password}@{db_host}/{db_name}"
+config.set_main_option("sqlalchemy.url", sqlalchemy_url)
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
