@@ -1,12 +1,13 @@
 from sqlalchemy.orm import Session
-from typing import List, Optional
+from sqlalchemy import or_, func
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy import func, and_, or_
+from typing import List, Optional
 
-from models import Accommodation, Destination, ItineraryDay
-from auth.models import User
-from accommodation.schemas import AccommodationCreate, AccommodationUpdate, AccommodationFilter
-from accommodation.exceptions import AccommodationException
+# Fix imports to use src prefix
+from src.models import Accommodation, Destination, ItineraryDay
+from src.auth.models import User
+from src.accommodation.schemas import AccommodationCreate, AccommodationUpdate, AccommodationFilter
+from src.accommodation.exceptions import AccommodationException
 
 
 def create_accommodation(db: Session, accommodation_data: AccommodationCreate, user: Optional[User] = None) -> Accommodation:

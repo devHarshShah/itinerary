@@ -3,10 +3,10 @@ from typing import List, Optional
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy import func
 
-from models import Destination, ItineraryDay
-from auth.models import User
-from destination.schemas import DestinationCreate, DestinationUpdate
-from destination.exceptions import DestinationException
+from src.models import Destination, ItineraryDay
+from src.auth.models import User
+from src.destination.schemas import DestinationCreate, DestinationUpdate
+from src.destination.exceptions import DestinationException
 
 
 def create_destination(db: Session, destination_data: DestinationCreate, user: Optional[User] = None) -> Destination:

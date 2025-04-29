@@ -3,7 +3,7 @@ from typing import Optional, List, Dict, Any
 from datetime import datetime, time
 from enum import Enum
 
-from models import TransportType, AccommodationType, ActivityCategory
+from src.models import TransportType, AccommodationType, ActivityCategory
 
 
 # ========== Base Schema Classes ==========

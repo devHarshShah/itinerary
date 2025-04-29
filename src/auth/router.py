@@ -3,11 +3,12 @@ from sqlalchemy.orm import Session
 from datetime import timedelta
 from typing import List
 
-from database import get_db
-from auth import service
-from auth.models import User
-from auth.schemas import UserCreate, UserLogin, UserUpdate, UserResponse, Token, UserRole, UserPasswordChange
-from auth.exceptions import AuthException
+# Fix imports to use src prefix
+from src.database import get_db
+from src.auth import service
+from src.auth.models import User
+from src.auth.schemas import UserCreate, UserLogin, UserUpdate, UserResponse, Token, UserRole, UserPasswordChange
+from src.auth.exceptions import AuthException
 
 router = APIRouter(
     prefix="/auth",

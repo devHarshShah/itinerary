@@ -1,20 +1,14 @@
-from fastapi import APIRouter, Depends, status, Query
+from fastapi import APIRouter, Depends, status, Query, Path
 from sqlalchemy.orm import Session
 from typing import List, Optional
+from uuid import UUID
 
-from database import get_db
-from auth.models import User
-from auth.service import get_current_active_user, is_admin
-from itinerary import service
-from itinerary.schemas import (
-    ItineraryCreate,
-    ItineraryUpdate,
-    ItineraryResponse,
-    ItineraryDetailResponse,
-    ItineraryFilter,
-    ItineraryDayCreate,
-    ItineraryDayUpdate
-)
+# Fix imports to use src prefix
+from src.database import get_db
+from src.itinerary import service
+from src.itinerary.schemas import ItineraryCreate, ItineraryUpdate, ItineraryResponse, ItineraryDetailResponse, ItineraryFilter, ItineraryDayCreate, ItineraryDayUpdate
+from src.auth.service import get_current_active_user
+from src.auth.models import User
 
 router = APIRouter(
     prefix="/itineraries",

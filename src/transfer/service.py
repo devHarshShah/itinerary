@@ -3,10 +3,10 @@ from typing import List, Optional
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy import func, and_, or_
 
-from models import Transfer, Destination, ItineraryDay
-from auth.models import User
-from transfer.schemas import TransferCreate, TransferUpdate, TransferFilter
-from transfer.exceptions import TransferException
+from src.models import Transfer, Destination, ItineraryDay
+from src.auth.models import User
+from src.transfer.schemas import TransferCreate, TransferUpdate, TransferFilter
+from src.transfer.exceptions import TransferException
 
 
 def create_transfer(db: Session, transfer_data: TransferCreate, user: Optional[User] = None) -> Transfer:

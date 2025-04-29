@@ -2,7 +2,7 @@ from pydantic import BaseModel, Field, field_validator
 from typing import Optional, Dict, Any, List
 from enum import Enum
 
-from models import TransportType
+from src.models import TransportType
 
 
 class TransferBase(BaseModel):

@@ -1,16 +1,21 @@
-from passlib.context import CryptContext
-from jose import jwt, JWTError
-from datetime import datetime, timedelta, timezone
-from typing import Optional
+from fastapi import Depends, HTTPException, status, Header
+from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
-from fastapi import Depends, Header
-import os
-from dotenv import load_dotenv
+from jose import JWTError, jwt
+from datetime import datetime, timedelta, timezone
+from typing import Optional, Union, Dict, Any
+import bcrypt
+import uuid
+from passlib.context import CryptContext
 
-from database import get_db
-from auth.models import User, UserRole
-from auth.schemas import UserCreate, TokenData
-from auth.exceptions import AuthException
+# Fix imports to use src prefix
+from src.database import get_db
+from src.auth.models import User, UserRole
+from src.auth.exceptions import AuthException
+from src.auth.schemas import UserCreate, TokenData
+
+from dotenv import load_dotenv
+import os
 
 load_dotenv()
 

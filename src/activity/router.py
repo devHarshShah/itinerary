@@ -2,17 +2,13 @@ from fastapi import APIRouter, Depends, status, Query
 from sqlalchemy.orm import Session
 from typing import List, Optional
 
-from database import get_db
-from auth.models import User
-from auth.service import get_current_active_user, is_admin
-from activity import service
-from activity.schemas import (
-    ActivityCreate, 
-    ActivityUpdate, 
-    ActivityResponse,
-    ActivityFilter
-)
-from models import ActivityCategory
+# Fix imports to use src prefix
+from src.database import get_db
+from src.activity import service
+from src.activity.schemas import ActivityCreate, ActivityUpdate, ActivityResponse, ActivityFilter
+from src.models import ActivityCategory
+from src.auth.service import get_current_active_user, is_admin
+from src.auth.models import User
 
 router = APIRouter(
     prefix="/activities",

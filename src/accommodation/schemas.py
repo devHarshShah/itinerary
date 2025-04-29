@@ -2,7 +2,7 @@ from pydantic import BaseModel, Field, field_validator
 from typing import Optional, Dict, Any, List
 from enum import Enum
 
-from models import AccommodationType
+from src.models import AccommodationType
 
 
 class AccommodationBase(BaseModel):

@@ -2,17 +2,13 @@ from fastapi import APIRouter, Depends, status, Query
 from sqlalchemy.orm import Session
 from typing import List, Optional
 
-from database import get_db
-from auth.models import User
-from auth.service import get_current_active_user, is_admin
-from transfer import service
-from transfer.schemas import (
-    TransferCreate, 
-    TransferUpdate, 
-    TransferResponse,
-    TransferFilter
-)
-from models import TransportType
+# Fix imports to use src prefix
+from src.database import get_db
+from src.transfer import service
+from src.transfer.schemas import TransferCreate, TransferUpdate, TransferResponse, TransferFilter
+from src.models import TransportType
+from src.auth.service import get_current_active_user, is_admin
+from src.auth.models import User
 
 router = APIRouter(
     prefix="/transfers",

@@ -3,10 +3,10 @@ from typing import List, Optional
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy import func, and_, or_
 
-from models import Activity, Destination, ItineraryDay
-from auth.models import User
-from activity.schemas import ActivityCreate, ActivityUpdate, ActivityFilter
-from activity.exceptions import ActivityException
+from src.models import Activity, Destination, ItineraryDay
+from src.auth.models import User
+from src.activity.schemas import ActivityCreate, ActivityUpdate, ActivityFilter
+from src.activity.exceptions import ActivityException
 
 
 def create_activity(db: Session, activity_data: ActivityCreate, user: Optional[User] = None) -> Activity:

@@ -5,10 +5,10 @@ from sqlalchemy import and_, or_
 from sqlalchemy.sql import text
 from pydantic import BaseModel
 
-from models import Itinerary, ItineraryDay, Destination, Accommodation, Activity, Transfer
-from auth.models import User
-from itinerary.schemas import ItineraryCreate, ItineraryUpdate, ItineraryFilter, ItineraryDayCreate, ItineraryDayUpdate
-from itinerary.exceptions import ItineraryException
+from src.models import Itinerary, ItineraryDay, Destination, Accommodation, Activity, Transfer
+from src.auth.models import User
+from src.itinerary.schemas import ItineraryCreate, ItineraryUpdate, ItineraryFilter, ItineraryDayCreate, ItineraryDayUpdate
+from src.itinerary.exceptions import ItineraryException
 
 # Define serializers for Accommodation, Activity, and Transfer
 class AccommodationSerializer(BaseModel):

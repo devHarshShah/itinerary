@@ -2,11 +2,12 @@ from fastapi import APIRouter, Depends, status, Query
 from sqlalchemy.orm import Session
 from typing import List, Optional
 
-from database import get_db
-from auth.models import User
-from auth.service import get_current_active_user, is_admin
-from destination import service
-from destination.schemas import DestinationCreate, DestinationUpdate, DestinationResponse
+# Fix imports to use src prefix
+from src.database import get_db
+from src.destination import service
+from src.destination.schemas import DestinationCreate, DestinationUpdate, DestinationResponse
+from src.auth.service import get_current_active_user, is_admin
+from src.auth.models import User
 
 router = APIRouter(
     prefix="/destinations",
