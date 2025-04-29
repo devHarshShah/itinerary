@@ -28,17 +28,12 @@ Base = declarative_base()
 # Session factory
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-# Context manager for database sessions
-@contextmanager
+# Dependency generator for database sessions
 def get_db():
     """Provide a transactional scope around a series of operations."""
     db = SessionLocal()
     try:
         yield db
-        db.commit()
-    except Exception:
-        db.rollback()
-        raise
     finally:
         db.close()
 

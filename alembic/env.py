@@ -1,6 +1,10 @@
 from logging.config import fileConfig
 import os
+import sys
 from dotenv import load_dotenv
+
+# Add the project root directory to the Python path
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
@@ -21,8 +25,12 @@ if config.config_file_name is not None:
 
 # add your model's MetaData object here
 # for 'autogenerate' support
-from database import Base
-from models import *  # Import all models to register them with Base
+from src.database import Base
+# Import all models to register them with Base
+from src.models import *  
+# Import auth models as well
+from src.auth.models import *
+
 target_metadata = Base.metadata
 
 # Use the same environment variables as in database.py
