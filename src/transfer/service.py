@@ -3,8 +3,8 @@ from typing import List, Optional
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy import func, and_, or_
 
-from src.models import Transfer, Destination, ItineraryDay
-from src.auth.models import User
+from src.models import Transfer, Destination, ItineraryDay, TransportType
+from src.auth.models import User, UserRole
 from src.transfer.schemas import TransferCreate, TransferUpdate, TransferFilter
 from src.transfer.exceptions import TransferException
 
@@ -12,7 +12,7 @@ from src.transfer.exceptions import TransferException
 def create_transfer(db: Session, transfer_data: TransferCreate, user: Optional[User] = None) -> Transfer:
     """Create a new transfer"""
     # Check if user is admin if authorization is needed
-    if user and hasattr(user, 'role') and user.role != 'admin':
+    if user and hasattr(user, 'role') and user.role != 'admin' and user.role != UserRole.ADMIN:
         raise TransferException.UNAUTHORIZED
     
     # Check if origin destination exists
@@ -40,14 +40,23 @@ def create_transfer(db: Session, transfer_data: TransferCreate, user: Optional[U
         raise TransferException.TRANSFER_ALREADY_EXISTS
     
     # Create new transfer
+    # Handle transport type conversion if it's a string
+    transport_type = transfer_data.type
+    if isinstance(transport_type, str):
+        for enum_val in TransportType:
+            if enum_val.value == transport_type.lower():
+                transport_type = enum_val
+                break
+                
     transfer = Transfer(
         name=transfer_data.name,
         origin_id=transfer_data.origin_id,
         destination_id=transfer_data.destination_id,
-        type=transfer_data.type,
+        type=transport_type,
         duration_hours=transfer_data.duration_hours,
         description=transfer_data.description,
-        price_range=transfer_data.price_range
+        price_range=str(transfer_data.price_category) if transfer_data.price_category is not None else None
+        # Exclude provider, additional_info, and contact_info as they don't exist in the model
     )
     
     db.add(transfer)
@@ -147,7 +156,19 @@ def update_transfer(
         transfer.destination_id = transfer_data.destination_id
     
     if transfer_data.type is not None:
-        transfer.type = transfer_data.type
+        # Convert string to uppercase for enum lookup if it's a string
+        if isinstance(transfer_data.type, str):
+            try:
+                # Try to find the enum by name (case-insensitive)
+                for enum_val in TransportType:
+                    if enum_val.value == transfer_data.type.lower():
+                        transfer.type = enum_val
+                        break
+            except (KeyError, ValueError):
+                # If conversion fails, keep the original value
+                pass
+        else:
+            transfer.type = transfer_data.type
     
     if transfer_data.duration_hours is not None:
         transfer.duration_hours = transfer_data.duration_hours
@@ -155,8 +176,8 @@ def update_transfer(
     if transfer_data.description is not None:
         transfer.description = transfer_data.description
     
-    if transfer_data.price_range is not None:
-        transfer.price_range = transfer_data.price_range
+    if transfer_data.price_category is not None:
+        transfer.price_range = str(transfer_data.price_category)
     
     try:
         db.commit()

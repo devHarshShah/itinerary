@@ -133,6 +133,11 @@ def is_admin(current_user: User = Depends(get_current_user)) -> User:
     return current_user
 
 
+def is_authenticated(current_user: User = Depends(get_current_user)) -> User:
+    """Check if user is authenticated (no permission checks, just needs to be logged in)"""
+    return current_user
+
+
 def get_user_by_email(db: Session, email: str) -> Optional[User]:
     """Get user by email"""
     return db.query(User).filter(User.email == email).first()

@@ -21,7 +21,7 @@ router = APIRouter(
 def create_itinerary(
     itinerary_data: ItineraryCreate,
     db: Session = Depends(get_db),
-    current_user: Optional[User] = Depends(get_current_active_user),
+    current_user: User = Depends(get_current_active_user),
 ):
     """
     Create a new itinerary with all its days, accommodations, activities, and transfers.

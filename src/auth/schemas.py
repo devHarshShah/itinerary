@@ -62,7 +62,7 @@ class TokenData(BaseModel):
 class UserResponse(UserBase):
     id: int
     role: UserRole
-    created_at: datetime
+    created_at: Optional[datetime] = None
     
     class Config:
-        orm_mode = True
+        from_attributes = True  # Updated from orm_mode = True to use newer Pydantic syntax

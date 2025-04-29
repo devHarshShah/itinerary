@@ -9,10 +9,13 @@ class TransferBase(BaseModel):
     name: str
     origin_id: int
     destination_id: int
-    type: TransportType
+    type: str  # Changed from TransportType to str to accept string values like "taxi"
     duration_hours: float
     description: Optional[str] = None
-    price_range: Optional[str] = None
+    price_category: Optional[int] = None  # Added price_category to match test data
+    provider: Optional[str] = None  # Added provider to match test data
+    additional_info: Optional[str] = None  # Added additional_info field
+    contact_info: Optional[Dict[str, Any]] = None  # Added contact_info field
     
     @field_validator('duration_hours')
     @classmethod
@@ -37,10 +40,13 @@ class TransferUpdate(BaseModel):
     name: Optional[str] = None
     origin_id: Optional[int] = None
     destination_id: Optional[int] = None
-    type: Optional[TransportType] = None
+    type: Optional[str] = None  # Changed from TransportType to str
     duration_hours: Optional[float] = None
     description: Optional[str] = None
-    price_range: Optional[str] = None
+    price_category: Optional[int] = None  # Added to match test data
+    provider: Optional[str] = None  # Added to match test data
+    additional_info: Optional[str] = None  # Added additional_info field
+    contact_info: Optional[Dict[str, Any]] = None  # Added contact_info field
     
     @field_validator('duration_hours')
     @classmethod

@@ -45,3 +45,8 @@ class ItineraryException:
         status_code=status.HTTP_400_BAD_REQUEST,
         detail="Day already exists for this itinerary"
     )
+    
+    INVALID_DAYS_COUNT = HTTPException(
+        status_code=status.HTTP_400_BAD_REQUEST,
+        detail="Number of days must be one more than the number of nights"
+    )

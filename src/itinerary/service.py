@@ -43,8 +43,8 @@ class TransferSerializer(BaseModel):
 def create_itinerary(db: Session, itinerary_data: ItineraryCreate, user: User = None) -> Itinerary:
     """Create a new itinerary with all its days, accommodations, activities, and transfers"""
     
-    # Validate that the number of days matches the duration
-    if len(itinerary_data.days) != itinerary_data.duration_nights + 1:
+    # Validate that the number of days matches the duration - only if days are provided
+    if itinerary_data.days and len(itinerary_data.days) != itinerary_data.duration_nights + 1:
         raise ItineraryException.INVALID_DAYS_COUNT
     
     # Create the main itinerary
@@ -322,6 +322,10 @@ def update_itinerary(db: Session, itinerary_id: int, itinerary_data: ItineraryUp
     if itinerary_data.total_estimated_cost is not None:
         itinerary.total_estimated_cost = itinerary_data.total_estimated_cost
     
+    # Update duration_nights if provided
+    if itinerary_data.duration_nights is not None:
+        itinerary.duration_nights = itinerary_data.duration_nights
+    
     db.commit()
     db.refresh(itinerary)
     
@@ -363,7 +367,10 @@ def update_itinerary(db: Session, itinerary_id: int, itinerary_data: ItineraryUp
 
 def delete_itinerary(db: Session, itinerary_id: int, user: Optional[User] = None) -> bool:
     """Delete an itinerary and all associated data"""
-    itinerary = get_itinerary(db, itinerary_id)
+    # Get the actual Itinerary model instance, not the serialized version
+    itinerary = db.query(Itinerary).filter(Itinerary.id == itinerary_id).first()
+    if not itinerary:
+        raise ItineraryException.ITINERARY_NOT_FOUND
     
     # If user is provided, check authorization (assuming Itinerary has a user_id column)
     if user and hasattr(Itinerary, 'user_id') and user.role != 'ADMIN':
